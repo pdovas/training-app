@@ -484,11 +484,23 @@
         }
       });
 
-      // Continue to Adobe Sign
-      els.continueBtn.addEventListener("click", function () {
-        if (els.continueBtn.disabled) return;
-        window.location.href = ADOBE_SIGN_URL;
-      });
+      // Continue to Adobe Sign (ONLY when deliberately clicked)
+els.continueBtn.addEventListener("click", function (e) {
+  e.preventDefault();
+  e.stopPropagation();
+
+  if (els.continueBtn.disabled) return;
+
+  // Extra safety: require an explicit click on this button
+  // (prevents accidental keyboard-triggered clicks/focus issues)
+  const confirmed = confirm(
+    "You are about to leave this page and continue to the training form. Continue?"
+  );
+  if (!confirmed) return;
+
+  window.location.href = ADOBE_SIGN_URL;
+});
+
 
       // Apply default language + initial UI
       applyLanguage("en");
@@ -497,3 +509,4 @@
   </script>
 </body>
 </html>
+
