@@ -331,7 +331,15 @@
       els.noticeBody.textContent = " " + t.noticeBody;
 
       els.ackHeading.textContent = t.ackHeading;
-      els.nextBtn.textContent = t.nextBtn;
+      // Set correct button label depending on whether this is the last video
+if (currentIndex === videos.length - 1) {
+  els.nextBtn.textContent =
+    currentLang === "en"
+      ? "Continue to Training Form"
+      : "Continuar al formulario de capacitación";
+} else {
+  els.nextBtn.textContent = t.nextBtn;
+}
       els.ackNote.textContent = t.ackNote;
 
       els.finalHeading.textContent = t.finalHeading;
@@ -473,16 +481,25 @@
 
       // Next button logic: advance to next video
       els.nextBtn.addEventListener("click", function () {
-        if (els.nextBtn.disabled) return;
+  if (els.nextBtn.disabled) return;
 
-        // Move to next video or finish
-        if (currentIndex < videos.length - 1) {
-          currentIndex += 1;
-          loadCurrentVideo();
-        } else {
-          completeAllVideos();
-        }
-      });
+  // If this is NOT the last video, go to the next one
+  if (currentIndex < videos.length - 1) {
+    currentIndex += 1;
+    loadCurrentVideo();
+  } else {
+    // Last video acknowledged → go to training form
+    const confirmed = confirm(
+      currentLang === "en"
+        ? "You are about to continue to the training form. Continue?"
+        : "Está a punto de continuar al formulario de capacitación. ¿Desea continuar?"
+    );
+    if (!confirmed) return;
+
+    window.location.href = ADOBE_SIGN_URL;
+  }
+});
+
 
       // Continue to Adobe Sign (ONLY when deliberately clicked)
 els.continueBtn.addEventListener("click", function (e) {
@@ -509,4 +526,5 @@ els.continueBtn.addEventListener("click", function (e) {
   </script>
 </body>
 </html>
+
 
