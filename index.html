@@ -397,11 +397,26 @@ if (currentIndex === videos.length - 1) {
     }
 
     function showAckUIAfterEnd() {
-      currentVideoEnded = true;
-      els.ackStep.style.display = "block";
-      updateAckLabel();
-      els.ackStep.scrollIntoView({ behavior: "smooth" });
-    }
+  currentVideoEnded = true;
+  els.ackStep.style.display = "block";
+  updateAckLabel();
+
+  // FIX: Change the button label on the LAST video only
+  if (currentIndex === videos.length - 1) {
+    els.nextBtn.textContent =
+      currentLang === "en"
+        ? "Continue to Training Form"
+        : "Continuar al formulario de capacitación";
+  } else {
+    els.nextBtn.textContent =
+      currentLang === "en"
+        ? "Continue to Next Video"
+        : "Continuar al siguiente video";
+  }
+
+  els.ackStep.scrollIntoView({ behavior: "smooth" });
+}
+
 
     function maybeEnableNext() {
       if (currentVideoEnded && els.ackCheckbox.checked) {
@@ -537,6 +552,7 @@ els.continueBtn.addEventListener("click", function (e) {
   </script>
 </body>
 </html>
+
 
 
 
