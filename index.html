@@ -119,7 +119,7 @@
       transform: scale(1.2);
     }
 
-    #next-btn, #continue-btn {
+    #next-btn {
       padding: 10px 18px;
       font-size: 1rem;
       border-radius: 6px;
@@ -128,10 +128,9 @@
       color: #fff;
       cursor: not-allowed;
       opacity: 0.6;
-      margin-right: 10px;
     }
 
-    #next-btn.enabled, #continue-btn.enabled {
+    #next-btn.enabled {
       cursor: pointer;
       opacity: 1;
     }
@@ -140,26 +139,6 @@
       font-size: 0.85rem;
       color: #666;
       margin-top: 10px;
-    }
-
-    #final-step {
-      display: none; /* shown only after last video acknowledged */
-      margin-top: 16px;
-      padding: 14px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      background: #f8f9fa;
-    }
-
-    #final-step h2 {
-      margin: 0 0 10px;
-      font-size: 1.1rem;
-    }
-
-    .divider {
-      height: 1px;
-      background: #e6e6e6;
-      margin: 18px 0;
     }
   </style>
 </head>
@@ -178,7 +157,9 @@
 
   <div class="notice">
     <span id="notice-heading">IMPORTANT:</span>
-    <span id="notice-body"> You must watch each training video in full. After each video ends, you must acknowledge completion before the next video will appear.</span>
+    <span id="notice-body">
+      You must watch each training video in full. After each video ends, you must acknowledge completion before the next video will appear.
+    </span>
   </div>
 
   <div class="progress">
@@ -196,27 +177,13 @@
     <h2 id="ack-heading">Training Acknowledgment</h2>
     <div class="ack-row">
       <input type="checkbox" id="ack-checkbox" />
-      <label for="ack-checkbox" id="ack-label">
-        I confirm that I have watched the entire training video and understand the information presented. I acknowledge that this training is a condition of starting work.
-      </label>
+      <label for="ack-checkbox" id="ack-label"></label>
     </div>
+
     <button id="next-btn" disabled>Continue to Next Video</button>
+
     <p class="small-note" id="ack-note">
       The next video will not appear until the current video has ended and you have checked the acknowledgment box.
-    </p>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- Final step (after all videos acknowledged) -->
-  <div id="final-step">
-    <h2 id="final-heading">Training Complete</h2>
-    <p id="final-text">
-      You have completed all required training videos. You may now continue to the training form.
-    </p>
-    <button id="continue-btn" disabled>Continue to Training Form</button>
-    <p class="small-note" id="final-note">
-      By clicking “Continue to Training Form,” you will be redirected to the documentation that you must review and sign.
     </p>
   </div>
 
@@ -229,16 +196,64 @@
       "https://na2.documents.adobe.com/public/esignWidget?wid=CBFCIBAA3AAABLblqZhBaK_l5Wopm430r1HwIRPnxP8nj-zbKyAsAoqj19EPGbQ6qXlgWD1IspW25_ypXqgI*";
 
     // --- Video list (order matters) ---
-    // We use the YouTube video IDs extracted from your links.
+    // IDs extracted from your YouTube links.
     const videos = [
-      { id: "K3nc4rIl97s", en: "Fall Protection", es: "Protección contra caídas" },
-      { id: "b5rXPgnGENI", en: "Lead Safety", es: "Seguridad con plomo" },
-      { id: "SI1mv9n5ITw", en: "Crystalline Silica Training", es: "Capacitación sobre sílice cristalina" },
-      { id: "sq4ojjwaQYg", en: "Respiratory Protection", es: "Protección respiratoria" },
-      { id: "Kj9bxGJwB40", en: "HazCom & GHS", es: "Comunicación de peligros y GHS" },
-      { id: "9vgdZP0hoWI", en: "Hearing Conservation", es: "Conservación de la audición" },
-      { id: "HnqabSdAwVg", en: "Scaffold Training", es: "Capacitación de andamios" },
-      { id: "mMpMLdgsvD4", en: "Ladder Safety", es: "Seguridad en escaleras" }
+      {
+        id: "Tzpz5fko-fg",
+        en: "Respirator Safety Training",
+        es: "Capacitación de protección respiratoria",
+        standard_en: "29 CFR 1910.134 (Respiratory Protection)",
+        standard_es: "29 CFR 1910.134 (Protección respiratoria)"
+      },
+      {
+        id: "TEf1Tsx_3MA",
+        en: "Fall Protection Training",
+        es: "Capacitación de protección contra caídas",
+        standard_en: "29 CFR 1926 Subpart M (Fall Protection)",
+        standard_es: "29 CFR 1926 Subparte M (Protección contra caídas)"
+      },
+      {
+        id: "HnqabSdAwVg",
+        en: "Scaffold Training",
+        es: "Capacitación sobre andamios",
+        standard_en: "29 CFR 1926 Subpart L (Scaffolds)",
+        standard_es: "29 CFR 1926 Subparte L (Andamios)"
+      },
+      {
+        id: "-kQmLYqIR2A",
+        en: "Crystalline Silica Training",
+        es: "Capacitación sobre sílice cristalina respirable",
+        standard_en: "29 CFR 1926.1153 (Respirable Crystalline Silica)",
+        standard_es: "29 CFR 1926.1153 (Sílice cristalina respirable)"
+      },
+      {
+        id: "bPoAHmox0BU",
+        en: "Lead Training",
+        es: "Capacitación sobre plomo",
+        standard_en: "29 CFR 1926.62 (Lead)",
+        standard_es: "29 CFR 1926.62 (Plomo)"
+      },
+      {
+        id: "b7ArZilnnTE",
+        en: "Ladder Safety Training",
+        es: "Capacitación de seguridad en escaleras",
+        standard_en: "29 CFR 1926.1053 (Ladders)",
+        standard_es: "29 CFR 1926.1053 (Escaleras)"
+      },
+      {
+        id: "GrC5-s4CI64",
+        en: "Hearing Protection Training",
+        es: "Capacitación de protección auditiva",
+        standard_en: "29 CFR 1926.52 (Occupational Noise Exposure) and 29 CFR 1926.101 (Hearing Protection)",
+        standard_es: "29 CFR 1926.52 (Exposición ocupacional al ruido) y 29 CFR 1926.101 (Protección auditiva)"
+      },
+      {
+        id: "cpCzwyhCUZI",
+        en: "HazCom & GHS Training",
+        es: "Capacitación de comunicación de peligros y GHS",
+        standard_en: "29 CFR 1926.59 / 29 CFR 1910.1200 (Hazard Communication Standard (GHS))",
+        standard_es: "29 CFR 1926.59 / 29 CFR 1910.1200 (Norma de comunicación de peligros (GHS))"
+      }
     ];
 
     // --- Translations / UI text ---
@@ -253,18 +268,17 @@
         noticeBody:
           "You must watch each training video in full. After each video ends, you must acknowledge completion before the next video will appear.",
         ackHeading: "Training Acknowledgment",
-        ackTemplate: (videoName) =>
-          `I confirm that I have watched the entire ${videoName} training video and understand the information presented. I acknowledge that this training is a condition of starting work.`,
+        ackTemplate: (videoTitle, standardText) =>
+          `I confirm that I have watched the entire “${videoTitle}” video and understand the information presented. ` +
+          `I acknowledge that this video is only one part of my overall training, and that additional hands-on and site-specific training may be required. ` +
+          `I understand that this training is provided in accordance with OSHA requirements, including ${standardText}.`,
         nextBtn: "Continue to Next Video",
+        lastBtn: "Continue to Training Form",
         ackNote:
           "The next video will not appear until the current video has ended and you have checked the acknowledgment box.",
-        finalHeading: "Training Complete",
-        finalText:
-          "You have completed all required training videos. You may now continue to the training form.",
-        continueBtn: "Continue to Training Form",
-        finalNote:
-          "By clicking “Continue to Training Form,” you will be redirected to the documentation that you must review and sign.",
-        counter: (i, total) => `Video ${i} of ${total}`
+        counter: (i, total) => `Video ${i} of ${total}`,
+        confirmForm:
+          "You are about to continue to the training form. Continue?"
       },
       es: {
         htmlLang: "es",
@@ -276,18 +290,17 @@
         noticeBody:
           "Debe ver cada video de capacitación completo. Después de que termine cada video, debe confirmar su finalización antes de que aparezca el siguiente video.",
         ackHeading: "Reconocimiento de capacitación",
-        ackTemplate: (videoName) =>
-          `Confirmo que he visto el video completo de capacitación de ${videoName} y entiendo la información presentada. Reconozco que esta capacitación es una condición para comenzar a trabajar.`,
+        ackTemplate: (videoTitle, standardText) =>
+          `Confirmo que he visto el video completo “${videoTitle}” y entiendo la información presentada. ` +
+          `Reconozco que este video es solo una parte de mi capacitación general y que puede requerirse capacitación adicional práctica y específica del sitio. ` +
+          `Entiendo que esta capacitación se proporciona de acuerdo con los requisitos de OSHA, incluidos ${standardText}.`,
         nextBtn: "Continuar al siguiente video",
+        lastBtn: "Continuar al formulario de capacitación",
         ackNote:
           "El siguiente video no aparecerá hasta que termine el video actual y usted marque la casilla de reconocimiento.",
-        finalHeading: "Capacitación completada",
-        finalText:
-          "Ha completado todos los videos de capacitación requeridos. Ahora puede continuar al formulario de capacitación.",
-        continueBtn: "Continuar al formulario de capacitación",
-        finalNote:
-          "Al hacer clic en «Continuar al formulario de capacitación», será redirigido a la documentación que debe revisar y firmar.",
-        counter: (i, total) => `Video ${i} de ${total}`
+        counter: (i, total) => `Video ${i} de ${total}`,
+        confirmForm:
+          "Está a punto de continuar al formulario de capacitación. ¿Desea continuar?"
       }
     };
 
@@ -298,25 +311,16 @@
     let currentVideoEnded = false;
 
     // --- DOM refs ---
-    const els = {
-      pageTitle: null,
-      introText: null,
-      noticeHeading: null,
-      noticeBody: null,
-      videoTitle: null,
-      videoCounter: null,
-      ackStep: null,
-      ackHeading: null,
-      ackCheckbox: null,
-      ackLabel: null,
-      nextBtn: null,
-      ackNote: null,
-      finalStep: null,
-      finalHeading: null,
-      finalText: null,
-      continueBtn: null,
-      finalNote: null
-    };
+    const els = {};
+
+    function setNextButtonLabel() {
+      const t = translations[currentLang];
+      if (currentIndex === videos.length - 1) {
+        els.nextBtn.textContent = t.lastBtn;
+      } else {
+        els.nextBtn.textContent = t.nextBtn;
+      }
+    }
 
     function applyLanguage(lang) {
       currentLang = lang;
@@ -331,25 +335,12 @@
       els.noticeBody.textContent = " " + t.noticeBody;
 
       els.ackHeading.textContent = t.ackHeading;
-      // Set correct button label depending on whether this is the last video
-if (currentIndex === videos.length - 1) {
-  els.nextBtn.textContent =
-    currentLang === "en"
-      ? "Continue to Training Form"
-      : "Continuar al formulario de capacitación";
-} else {
-  els.nextBtn.textContent = t.nextBtn;
-}
       els.ackNote.textContent = t.ackNote;
-
-      els.finalHeading.textContent = t.finalHeading;
-      els.finalText.textContent = t.finalText;
-      els.continueBtn.textContent = t.continueBtn;
-      els.finalNote.textContent = t.finalNote;
 
       // Update per-video UI
       updateVideoHeader();
       updateAckLabel();
+      setNextButtonLabel();
 
       // Toggle button styles
       document.querySelectorAll(".lang-btn").forEach((btn) => {
@@ -358,30 +349,21 @@ if (currentIndex === videos.length - 1) {
     }
 
     function updateVideoHeader() {
-  const t = translations[currentLang];
-  const v = videos[currentIndex];
-  const name = currentLang === "en" ? v.en : v.es;
+      const t = translations[currentLang];
+      const v = videos[currentIndex];
+      const name = currentLang === "en" ? v.en : v.es;
 
-  els.videoTitle.textContent = name + " Training";
-  els.videoCounter.textContent = t.counter(currentIndex + 1, videos.length);
-
-  // IMPORTANT: Set the correct button label every time the header updates
-  if (currentIndex === videos.length - 1) {
-    els.nextBtn.textContent =
-      currentLang === "en"
-        ? "Continue to Training Form"
-        : "Continuar al formulario de capacitación";
-  } else {
-    els.nextBtn.textContent = t.nextBtn;
-  }
-}
-
+      els.videoTitle.textContent = name;
+      els.videoCounter.textContent = t.counter(currentIndex + 1, videos.length);
+    }
 
     function updateAckLabel() {
       const t = translations[currentLang];
       const v = videos[currentIndex];
-      const name = currentLang === "en" ? v.en : v.es;
-      els.ackLabel.textContent = t.ackTemplate(name);
+      const title = currentLang === "en" ? v.en : v.es;
+      const standard = currentLang === "en" ? v.standard_en : v.standard_es;
+
+      els.ackLabel.textContent = t.ackTemplate(title, standard);
     }
 
     function resetAckUI() {
@@ -397,26 +379,12 @@ if (currentIndex === videos.length - 1) {
     }
 
     function showAckUIAfterEnd() {
-  currentVideoEnded = true;
-  els.ackStep.style.display = "block";
-  updateAckLabel();
-
-  // FIX: Change the button label on the LAST video only
-  if (currentIndex === videos.length - 1) {
-    els.nextBtn.textContent =
-      currentLang === "en"
-        ? "Continue to Training Form"
-        : "Continuar al formulario de capacitación";
-  } else {
-    els.nextBtn.textContent =
-      currentLang === "en"
-        ? "Continue to Next Video"
-        : "Continuar al siguiente video";
-  }
-
-  els.ackStep.scrollIntoView({ behavior: "smooth" });
-}
-
+      currentVideoEnded = true;
+      els.ackStep.style.display = "block";
+      updateAckLabel();
+      setNextButtonLabel();
+      els.ackStep.scrollIntoView({ behavior: "smooth" });
+    }
 
     function maybeEnableNext() {
       if (currentVideoEnded && els.ackCheckbox.checked) {
@@ -431,26 +399,13 @@ if (currentIndex === videos.length - 1) {
     function loadCurrentVideo() {
       resetAckUI();
       updateVideoHeader();
+      setNextButtonLabel();
 
       const vid = videos[currentIndex].id;
 
       if (player && typeof player.loadVideoById === "function") {
         player.loadVideoById(vid);
-      } else {
-        // If player isn't ready yet, it will be created with current video in onYouTubeIframeAPIReady.
       }
-    }
-
-    function completeAllVideos() {
-      // hide ack step, show final step
-      els.ackStep.style.display = "none";
-      els.finalStep.style.display = "block";
-
-      // enable continue button only after they finish all videos (no extra checkbox requested here)
-      els.continueBtn.disabled = false;
-      els.continueBtn.classList.add("enabled");
-
-      els.finalStep.scrollIntoView({ behavior: "smooth" });
     }
 
     // --- YouTube API callback ---
@@ -468,6 +423,7 @@ if (currentIndex === videos.length - 1) {
     }
 
     function onPlayerStateChange(event) {
+      // Only show acknowledgment when the current video ends
       if (event.data === YT.PlayerState.ENDED) {
         showAckUIAfterEnd();
         maybeEnableNext();
@@ -491,12 +447,6 @@ if (currentIndex === videos.length - 1) {
       els.nextBtn = document.getElementById("next-btn");
       els.ackNote = document.getElementById("ack-note");
 
-      els.finalStep = document.getElementById("final-step");
-      els.finalHeading = document.getElementById("final-heading");
-      els.finalText = document.getElementById("final-text");
-      els.continueBtn = document.getElementById("continue-btn");
-      els.finalNote = document.getElementById("final-note");
-
       // Language buttons
       document.querySelectorAll(".lang-btn").forEach((btn) => {
         btn.addEventListener("click", () => applyLanguage(btn.dataset.lang));
@@ -505,54 +455,30 @@ if (currentIndex === videos.length - 1) {
       // Ack checkbox logic
       els.ackCheckbox.addEventListener("change", maybeEnableNext);
 
-      // Next button logic: advance to next video
-      els.nextBtn.addEventListener("click", function () {
-  if (els.nextBtn.disabled) return;
+      // Next button logic:
+      // - Videos 1..7: load next video
+      // - Video 8: go to Adobe Sign form
+      els.nextBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
 
-  // If this is NOT the last video, go to the next one
-  if (currentIndex < videos.length - 1) {
-    currentIndex += 1;
-    loadCurrentVideo();
-  } else {
-    // Last video acknowledged → go to training form
-    const confirmed = confirm(
-      currentLang === "en"
-        ? "You are about to continue to the training form. Continue?"
-        : "Está a punto de continuar al formulario de capacitación. ¿Desea continuar?"
-    );
-    if (!confirmed) return;
+        if (els.nextBtn.disabled) return;
 
-    window.location.href = ADOBE_SIGN_URL;
-  }
-});
+        if (currentIndex < videos.length - 1) {
+          currentIndex += 1;
+          loadCurrentVideo();
+        } else {
+          const t = translations[currentLang];
+          const confirmed = confirm(t.confirmForm);
+          if (!confirmed) return;
+          window.location.href = ADOBE_SIGN_URL;
+        }
+      });
 
-
-      // Continue to Adobe Sign (ONLY when deliberately clicked)
-els.continueBtn.addEventListener("click", function (e) {
-  e.preventDefault();
-  e.stopPropagation();
-
-  if (els.continueBtn.disabled) return;
-
-  // Extra safety: require an explicit click on this button
-  // (prevents accidental keyboard-triggered clicks/focus issues)
-  const confirmed = confirm(
-    "You are about to leave this page and continue to the training form. Continue?"
-  );
-  if (!confirmed) return;
-
-  window.location.href = ADOBE_SIGN_URL;
-});
-
-
-      // Apply default language + initial UI
+      // Default language + initial UI
       applyLanguage("en");
       loadCurrentVideo();
     });
   </script>
 </body>
 </html>
-
-
-
-
