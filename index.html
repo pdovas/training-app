@@ -100,13 +100,11 @@
 
 <body>
 
-  <!-- Language Toggle -->
   <div class="lang-switcher">
     <button id="enBtn" class="lang-btn active">English</button>
     <button id="esBtn" class="lang-btn">Español</button>
   </div>
 
-  <!-- Updated Header -->
   <h1 id="page-title">Jag'd Safety Training</h1>
   <h3 id="page-subtitle">Once video is completed, check the box below to proceed.</h3>
 
@@ -128,19 +126,19 @@
 
   <!-- Continue Button -->
   <div id="continueSection">
-    <a id="continueBtn" href="training_form.html">Continue to Training Application →</a>
+    <a id="continueBtn"
+       href="https://na2.documents.adobe.com/public/esignWidget?wid=CBFCIBAA3AAABLblqZhBaK_l5Wopm430r1HwIRPnxP8nj-zbKyAsAoqj19EPGbQ6qXlgWD1IspW25_ypXqgI*">
+       Continue to Training Application →
+    </a>
   </div>
 
-  <!-- SCRIPT -->
   <script>
     const video = document.getElementById('trainingVideo');
 
-    // Show acknowledgment after video ends
     video.addEventListener('ended', function () {
       document.getElementById('ackSection').style.display = 'block';
     });
 
-    // Show continue button after checkbox clicked
     function bindCheckbox() {
       const checkbox = document.getElementById('ackCheckbox');
       checkbox.addEventListener('change', function () {
@@ -150,7 +148,6 @@
     }
     bindCheckbox();
 
-    // English / Spanish Toggle
     const enText = {
       title: "Jag'd Safety Training",
       subtitle: "Once video is completed, check the box below to proceed.",
