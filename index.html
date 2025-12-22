@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Pre-Employment Training</title>
+  <title>Required Safety Training</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -11,26 +12,27 @@
       margin: 0 auto;
       padding: 20px;
       line-height: 1.5;
+      background: #f9f9f9;
     }
 
     h1 {
       text-align: center;
-      margin: 8px 0 10px;
+      margin: 10px 0 20px;
     }
 
     .lang-switcher {
       display: flex;
       justify-content: flex-end;
-      gap: 8px;
-      margin-bottom: 10px;
+      gap: 10px;
+      margin-bottom: 15px;
     }
 
     .lang-btn {
-      padding: 6px 12px;
+      padding: 6px 14px;
       font-size: 0.9rem;
-      border-radius: 4px;
-      border: 1px solid #999;
-      background: #f0f0f0;
+      border-radius: 5px;
+      border: 1px solid #007bff;
+      background: #e8f1ff;
       cursor: pointer;
       font-weight: 600;
     }
@@ -38,409 +40,172 @@
     .lang-btn.active {
       background: #007bff;
       color: #fff;
-      border-color: #007bff;
     }
 
-    .intro {
-      margin: 10px 0 18px;
-      font-size: 1rem;
+    .video-container {
+      margin-top: 20px;
     }
 
-    .notice {
-      background: #fff3cd;
-      border: 1px solid #ffecb5;
-      padding: 12px 16px;
-      border-radius: 6px;
-      margin-bottom: 18px;
-      font-size: 1rem;
-      font-weight: 600;
+    video {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #ccc;
     }
 
-    .progress {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 10px;
-      margin: 12px 0 8px;
-      flex-wrap: wrap;
-    }
-
-    .progress .left {
-      font-weight: 700;
+    #ackSection {
+      display: none;
+      margin-top: 20px;
+      background: #eef2f5;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #cdd3d8;
       font-size: 1.05rem;
     }
 
-    .progress .right {
-      font-size: 0.95rem;
-      color: #444;
-    }
-
-    .video-wrapper {
-      position: relative;
-      padding-bottom: 56.25%; /* 16:9 */
-      height: 0;
-      overflow: hidden;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      background: #000;
-    }
-
-    .video-wrapper iframe {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border: 0;
-    }
-
-    #ack-step {
-      display: none; /* shown only after current video ends */
-      margin-top: 16px;
-      padding: 14px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      background: #f8f9fa;
-    }
-
-    #ack-step h2 {
-      margin: 0 0 10px;
-      font-size: 1.1rem;
-    }
-
-    .ack-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .ack-row input[type="checkbox"] {
-      margin-top: 4px;
+    #ackLabel input {
       transform: scale(1.2);
+      margin-right: 10px;
     }
 
-    #next-btn {
-      padding: 10px 18px;
-      font-size: 1rem;
-      border-radius: 6px;
-      border: none;
-      background: #007bff;
+    #continueSection {
+      display: none;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    #continueBtn {
+      font-size: 1.2rem;
+      padding: 12px 24px;
+      background: #007acc;
       color: #fff;
-      cursor: not-allowed;
-      opacity: 0.6;
+      border-radius: 6px;
+      text-decoration: none;
+      display: inline-block;
+      font-weight: bold;
     }
 
-    #next-btn.enabled {
-      cursor: pointer;
-      opacity: 1;
-    }
-
-    .small-note {
-      font-size: 0.85rem;
-      color: #666;
-      margin-top: 10px;
+    #continueBtn:hover {
+      background: #005fa3;
     }
   </style>
 </head>
+
 <body>
-  <!-- Language toggle -->
+
+  <!-- Language Toggle -->
   <div class="lang-switcher">
-    <button class="lang-btn active" data-lang="en">English</button>
-    <button class="lang-btn" data-lang="es">Español</button>
+    <button id="enBtn" class="lang-btn active">English</button>
+    <button id="esBtn" class="lang-btn">Español</button>
   </div>
 
-  <h1 id="page-title">Pre-Employment Training</h1>
+  <!-- Page Title -->
+  <h1 id="page-title">Required Safety Training Video</h1>
 
-  <p class="intro" id="intro-text">
-    Welcome to your pre-employment training. Before you can continue to the application, you must complete the required training videos below.
-  </p>
-
-  <div class="notice">
-    <span id="notice-heading">IMPORTANT:</span>
-    <span id="notice-body">
-      You must watch each training video in full. After each video ends, you must acknowledge completion before the next video will appear.
-    </span>
+  <!-- Training Video -->
+  <div class="video-container">
+    <video id="trainingVideo" controls>
+      <source src="OSHA_Training_Video.mp4" type="video/mp4">
+      Your browser does not support MP4 playback.
+    </video>
   </div>
 
-  <div class="progress">
-    <div class="left" id="video-title">Training Video</div>
-    <div class="right" id="video-counter">Video 1 of 8</div>
+  <!-- Acknowledgment Section (hidden until video ends) -->
+  <div id="ackSection">
+    <label id="ackLabel">
+      <input type="checkbox" id="ackCheckbox">
+      I confirm that I have watched the entire safety training video. I acknowledge this video is only part of my training. Additional safety rules and procedures are covered in the written training materials provided, which I have been trained on.
+    </label>
   </div>
 
-  <!-- YouTube video -->
-  <div class="video-wrapper">
-    <div id="player"></div>
+  <!-- Continue Button (hidden until checkbox is checked) -->
+  <div id="continueSection">
+    <a id="continueBtn" href="training_application.html">Continue to Training Application →</a>
   </div>
 
-  <!-- Acknowledgment for the current video (shown only after video ends) -->
-  <div id="ack-step">
-    <h2 id="ack-heading">Training Acknowledgment</h2>
-    <div class="ack-row">
-      <input type="checkbox" id="ack-checkbox" />
-      <label for="ack-checkbox" id="ack-label"></label>
-    </div>
-
-    <button id="next-btn" disabled>Continue to Next Video</button>
-
-    <p class="small-note" id="ack-note">
-      The next video will not appear until the current video has ended and you have checked the acknowledgment box.
-    </p>
-  </div>
-
-  <!-- YouTube IFrame API -->
-  <script src="https://www.youtube.com/iframe_api"></script>
-
+  <!-- SCRIPT -->
   <script>
-    const ADOBE_SIGN_URL =
-      "https://na2.documents.adobe.com/public/esignWidget?wid=CBFCIBAA3AAABLblqZhBaK_l5Wopm430r1HwIRPnxP8nj-zbKyAsAoqj19EPGbQ6qXlgWD1IspW25_ypXqgI*";
+    // --------------------------------------------------
+    // DISABLE SCRUBBING / SEEKING (NO SKIPPING AHEAD)
+    // --------------------------------------------------
+    const video = document.getElementById('trainingVideo');
+    let lastAllowedTime = 0;
 
-    // Video list (order matters) — IDs extracted from your links
-    const videos = [
-      {
-        id: "Tzpz5fko-fg",
-        title: "Respirator Safety Training",
-        ack_en: (t) => `I confirm that I have watched the entire "${t}" video and understand the information presented. I acknowledge this video is only part of my training and i was trained in accordance with 29 CFR 1910.134 Respiratory Protection`
-      },
-      {
-        id: "TEf1Tsx_3MA",
-        title: "Fall Protection Training",
-        ack_en: (t) => `I confirm that I have watched the entire "${t}" video and understand the information presented. I acknowledge this video is only part of my training and i was trained in accordance with 29 CFR 1926 Subpart M Fall Protection  Training requirements`
-      },
-      {
-        id: "HnqabSdAwVg",
-        title: "Scaffold Training",
-        ack_en: (t) => `I confirm that I have watched the entire "${t}" video and understand the information presented. I acknowledge this video is only part of my training and i was trained in accordance with 29 CFR 1926 Subpart L, Scaffolds`
-      },
-      {
-        id: "-kQmLYqIR2A",
-        title: "Crystalline Silica Training",
-        ack_en: (t) => `I confirm that I have watched the entire "${t}" video and understand the information presented. I acknowledge this video is only part of my training and i was trained in accordance with 29 CFR 1926.1153 Respirable Crystalline Silica`
-      },
-      {
-        id: "bPoAHmox0BU",
-        title: "Lead Training",
-        // OSHA correction applied: 1926.62 (was 1926.26)
-        ack_en: (t) => `I confirm that I have watched the entire "${t}" video and understand the information presented. I acknowledge this video is only part of my training and i was trained in accordance with 29 CFR 1926.62 Lead Standard`
-      },
-      {
-        id: "b7ArZilnnTE",
-        title: "Ladder Safety Training",
-        // OSHA correction applied: 1926.1053 (was 11926.1053)
-        ack_en: (t) => `I confirm that I have watched the entire "${t}" video and understand the information presented. I acknowledge this video is only part of my training and i was trained in accordance with 29 CFR 1926.1053 - Ladders`
-      },
-      {
-        id: "GrC5-s4CI64",
-        title: "Hearing Protection Training",
-        ack_en: (t) => `I confirm that I have watched the entire "${t}" video and understand the information presented. I acknowledge this video is only part of my training and i was trained in accordance with 29 CFR 1926.52 occupational noise exposure and 29 CFR  1926.101 hearing protection`
-      },
-      {
-        id: "cpCzwyhCUZI",
-        title: "Hazcom & GHS Training",
-        ack_en: (t) => `I confirm that I have watched the entire "${t}" video and understand the information presented. I acknowledge this video is only part of my training and i was trained in accordance with 29 CFR 1926.59 (29 CFR 1910.1200) Hazard Communication  Standard`
+    video.addEventListener('timeupdate', function () {
+      if (video.currentTime > lastAllowedTime + 0.35) {
+        video.currentTime = lastAllowedTime;
+      } else {
+        lastAllowedTime = video.currentTime;
       }
-    ];
+    });
 
-    const translations = {
-      en: {
-        htmlLang: "en",
-        titleTag: "Pre-Employment Training",
-        pageTitle: "Pre-Employment Training",
-        introText:
-          "Welcome to your pre-employment training. Before you can continue to the application, you must complete the required training videos below.",
-        noticeHeading: "IMPORTANT:",
-        noticeBody:
-          "You must watch each training video in full. After each video ends, you must acknowledge completion before the next video will appear.",
-        ackHeading: "Training Acknowledgment",
-        ackNote:
-          "The next video will not appear until the current video has ended and you have checked the acknowledgment box.",
-        nextBtn: "Continue to Next Video",
-        lastBtn: "Continue to Training Form",
-        counter: (i, total) => `Video ${i} of ${total}`,
-        confirmForm: "You are about to continue to the training form. Continue?"
-      },
-      es: {
-        htmlLang: "es",
-        titleTag: "Capacitación previa al empleo",
-        pageTitle: "Capacitación previa al empleo",
-        introText:
-          "Bienvenido a su capacitación previa al empleo. Antes de poder continuar con la solicitud, debe completar los videos de capacitación requeridos a continuación.",
-        noticeHeading: "IMPORTANTE:",
-        noticeBody:
-          "Debe ver cada video de capacitación completo. Después de que termine cada video, debe confirmar su finalización antes de que aparezca el siguiente video.",
-        ackHeading: "Reconocimiento de capacitación",
-        ackNote:
-          "El siguiente video no aparecerá hasta que termine el video actual y usted marque la casilla de reconocimiento.",
-        nextBtn: "Continuar al siguiente video",
-        lastBtn: "Continuar al formulario de capacitación",
-        counter: (i, total) => `Video ${i} de ${total}`,
-        confirmForm: "Está a punto de continuar al formulario de capacitación. ¿Desea continuar?"
+    video.addEventListener('seeking', function () {
+      if (video.currentTime > lastAllowedTime) {
+        video.currentTime = lastAllowedTime;
       }
+    });
+
+    // --------------------------------------------------
+    // SHOW ACK CHECKBOX AFTER VIDEO ENDS
+    // --------------------------------------------------
+    video.addEventListener('ended', function () {
+      document.getElementById('ackSection').style.display = 'block';
+    });
+
+    // --------------------------------------------------
+    // CONTINUE BUTTON AFTER CHECKBOX CLICKED
+    // --------------------------------------------------
+    function bindCheckbox() {
+      const checkbox = document.getElementById('ackCheckbox');
+      checkbox.addEventListener('change', function () {
+        const continueSection = document.getElementById('continueSection');
+        if (checkbox.checked) {
+          continueSection.style.display = 'block';
+        } else {
+          continueSection.style.display = 'none';
+        }
+      });
+    }
+    bindCheckbox();
+
+    // --------------------------------------------------
+    // ENGLISH / SPANISH LANGUAGE TOGGLE
+    // --------------------------------------------------
+    const enText = {
+      title: "Required Safety Training Video",
+      ack: "I confirm that I have watched the entire safety training video. I acknowledge this video is only part of my training. Additional safety rules and procedures are covered in the written training materials provided, which I have been trained on.",
+      continue: "Continue to Training Application →"
     };
 
-    // State
-    let currentLang = "en";
-    let currentIndex = 0;
-    let player = null;
-    let currentVideoEnded = false;
+    const esText = {
+      title: "Video Obligatorio de Capacitación de Seguridad",
+      ack: "Confirmo que he visto el video completo de capacitación de seguridad. Reconozco que este video es solo una parte de mi capacitación. Reglas y procedimientos de seguridad adicionales están incluidos en los materiales escritos que he recibido y en los cuales he sido capacitado.",
+      continue: "Continuar a la Solicitud de Capacitación →"
+    };
 
-    // DOM refs
-    const els = {};
+    document.getElementById('enBtn').addEventListener('click', function () {
+      this.classList.add('active');
+      document.getElementById('esBtn').classList.remove('active');
 
-    function setNextButtonLabel() {
-      const t = translations[currentLang];
-      if (currentIndex === videos.length - 1) {
-        els.nextBtn.textContent = t.lastBtn;
-      } else {
-        els.nextBtn.textContent = t.nextBtn;
-      }
-    }
+      document.getElementById('page-title').innerText = enText.title;
+      document.getElementById('ackLabel').innerHTML =
+        '<input type="checkbox" id="ackCheckbox"> ' + enText.ack;
 
-    function applyLanguage(lang) {
-      currentLang = lang;
-      const t = translations[lang];
+      bindCheckbox();
+      document.getElementById('continueBtn').innerText = enText.continue;
+    });
 
-      document.documentElement.lang = t.htmlLang;
-      document.title = t.titleTag;
+    document.getElementById('esBtn').addEventListener('click', function () {
+      this.classList.add('active');
+      document.getElementById('enBtn').classList.remove('active');
 
-      els.pageTitle.textContent = t.pageTitle;
-      els.introText.textContent = t.introText;
-      els.noticeHeading.textContent = t.noticeHeading;
-      els.noticeBody.textContent = " " + t.noticeBody;
+      document.getElementById('page-title').innerText = esText.title;
+      document.getElementById('ackLabel').innerHTML =
+        '<input type="checkbox" id="ackCheckbox"> ' + esText.ack;
 
-      els.ackHeading.textContent = t.ackHeading;
-      els.ackNote.textContent = t.ackNote;
-
-      // Update per-video UI
-      updateVideoHeader();
-      updateAckLabel();
-      setNextButtonLabel();
-
-      // Toggle button styles
-      document.querySelectorAll(".lang-btn").forEach((btn) => {
-        btn.classList.toggle("active", btn.dataset.lang === lang);
-      });
-    }
-
-    function updateVideoHeader() {
-      const t = translations[currentLang];
-      const v = videos[currentIndex];
-      els.videoTitle.textContent = v.title;
-      els.videoCounter.textContent = t.counter(currentIndex + 1, videos.length);
-    }
-
-    function updateAckLabel() {
-      // Acknowledgment text stays exactly as you wrote it (English), per your request.
-      // Spanish toggle still applies to the UI labels/buttons.
-      const v = videos[currentIndex];
-      els.ackLabel.textContent = v.ack_en(v.title);
-    }
-
-    function resetAckUI() {
-      currentVideoEnded = false;
-      els.ackCheckbox.checked = false;
-
-      els.ackStep.style.display = "none";
-
-      els.nextBtn.disabled = true;
-      els.nextBtn.classList.remove("enabled");
-    }
-
-    function showAckUIAfterEnd() {
-      currentVideoEnded = true;
-      els.ackStep.style.display = "block";
-      updateAckLabel();
-      setNextButtonLabel();
-      els.ackStep.scrollIntoView({ behavior: "smooth" });
-    }
-
-    function maybeEnableNext() {
-      if (currentVideoEnded && els.ackCheckbox.checked) {
-        els.nextBtn.disabled = false;
-        els.nextBtn.classList.add("enabled");
-      } else {
-        els.nextBtn.disabled = true;
-        els.nextBtn.classList.remove("enabled");
-      }
-    }
-
-    function loadCurrentVideo() {
-      resetAckUI();
-      updateVideoHeader();
-      setNextButtonLabel();
-
-      const vid = videos[currentIndex].id;
-      if (player && typeof player.loadVideoById === "function") {
-        player.loadVideoById(vid);
-      }
-    }
-
-    // YouTube API callback
-    function onYouTubeIframeAPIReady() {
-      player = new YT.Player("player", {
-        videoId: videos[0].id,
-        playerVars: {
-          rel: 0,
-          modestbranding: 1
-        },
-        events: {
-          onStateChange: onPlayerStateChange
-        }
-      });
-    }
-
-    function onPlayerStateChange(event) {
-      if (event.data === YT.PlayerState.ENDED) {
-        showAckUIAfterEnd();
-        maybeEnableNext();
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-      // Cache DOM refs
-      els.pageTitle = document.getElementById("page-title");
-      els.introText = document.getElementById("intro-text");
-      els.noticeHeading = document.getElementById("notice-heading");
-      els.noticeBody = document.getElementById("notice-body");
-      els.videoTitle = document.getElementById("video-title");
-      els.videoCounter = document.getElementById("video-counter");
-
-      els.ackStep = document.getElementById("ack-step");
-      els.ackHeading = document.getElementById("ack-heading");
-      els.ackCheckbox = document.getElementById("ack-checkbox");
-      els.ackLabel = document.getElementById("ack-label");
-      els.nextBtn = document.getElementById("next-btn");
-      els.ackNote = document.getElementById("ack-note");
-
-      // Language buttons
-      document.querySelectorAll(".lang-btn").forEach((btn) => {
-        btn.addEventListener("click", () => applyLanguage(btn.dataset.lang));
-      });
-
-      // Ack checkbox
-      els.ackCheckbox.addEventListener("change", maybeEnableNext);
-
-      // Next button
-      els.nextBtn.addEventListener("click", function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        if (els.nextBtn.disabled) return;
-
-        if (currentIndex < videos.length - 1) {
-          currentIndex += 1;
-          loadCurrentVideo();
-        } else {
-          const t = translations[currentLang];
-          const confirmed = confirm(t.confirmForm);
-          if (!confirmed) return;
-          window.location.href = ADOBE_SIGN_URL;
-        }
-      });
-
-      // Default language + initial UI
-      applyLanguage("en");
-      loadCurrentVideo();
+      bindCheckbox();
+      document.getElementById('continueBtn').innerText = esText.continue;
     });
   </script>
+
 </body>
 </html>
